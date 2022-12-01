@@ -35,7 +35,9 @@ https://competeapi.vercel.app/user/<platform>/<username>/
 
 #### Example URL
 https://competeapi.vercel.app/user/codechef/vivek9919/
+
 https://competeapi.vercel.app/user/codeforces/vivek9919/
+
 https://competeapi.vercel.app/user/leetcode/vivek9919/
 
 #### Platforms Available
