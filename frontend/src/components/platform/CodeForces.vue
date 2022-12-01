@@ -23,14 +23,14 @@
                         <img src="../../assets/codeforces1.png" class="img-fluid rounded-start" alt="img">
                     </div>
                     <div class="col-md-8">
-                        <div class="card-body" v-if="posts.length">
-                            <h5 class="card-title">Name:-{{posts[0]['firstName']}} ({{posts[0]['country']}})</h5>
+                        <div class="card-body" v-if="posts">
+                            <h5 class="card-title">Name:-{{posts['firstName']}} ({{posts['country']}})</h5>
                             <p class="card-text"><i>Username :- {{username}}</i> </p>
-                            <p class="card-text">Rating :- {{posts[0].rating}} </p>
-                            <p class="card-text">Maximum Rating :- {{posts[0].maxRating}} </p>
-                            <p class="card-text">Rank :- {{posts[0].rank}} </p>
-                            <p class="card-text">Maxium Rank :- {{posts[0].maxRank}} </p>
-                            <p class="card-text">Contribution :- {{posts[0].contribution}} </p>
+                            <p class="card-text">Rating :- {{posts.rating}} </p>
+                            <p class="card-text">Maximum Rating :- {{posts.maxRating}} </p>
+                            <p class="card-text">Rank :- {{posts.rank}} </p>
+                            <p class="card-text">Maxium Rank :- {{posts.maxRank}} </p>
+                            <p class="card-text">Contribution :- {{posts.contribution}} </p>
                             <p class="card-text">Codeforces:- <a v-bind:href="alink" target="_blank">Offical Link</a></p>
                             <!-- <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p> -->
                         </div>
@@ -64,15 +64,15 @@ export default {
        async getPost(){
             document.getElementById('profile').style.visibility="visible";
             this.alink='https://codeforces.com/profile/'+this.username;
-           await axios.get('https://competeapi.vercel.app/user/codeforces/'+this.username)
+           await axios.get('api/codeforces/user/'+this.username)
             .then((response)=>{
                 // console.log(response.data);
-                console.log(this.username);
+                // console.log(this.username);
                 this.posts=response.data
-                console.log(this.posts);
+                // console.log(this.posts);
             })
-            .catch((error)=>{
-            console.log(error);
+            .catch(()=>{
+            // console.log(error);
             this.errmsg='Error in fetching data'
 
             })

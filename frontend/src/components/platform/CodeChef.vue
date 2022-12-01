@@ -24,12 +24,12 @@
                         <img src="../../assets/codechef logo2.png" class="img-fluid rounded-start" alt="img">
                     </div>
                     <div class="col-md-8">
-                        <div class="card-body" v-if="posts.status=='Success'">
-                            <h5 class="card-title"><span>Name:-{{userdetails.name}} </span> <span>({{userdetails.country}})</span></h5>
+                        <div class="card-body" v-if="posts">
+                            <h5 class="card-title"> <span>({{posts.country}})</span></h5>
                             <div class="card-text "><i>Username :- {{username}}</i> </div>
-                            <div class="card-text contentRow"><span>Stars :- {{posts.stars}} </span> <span> Solved Problems :- {{totalsolved.count}}</span></div>
+                            <div class="card-text contentRow"><span>Stars :- {{posts.rating}} </span> </div>
                            
-                            <div class="card-text contentRow"><span>Rating :-{{posts.rating}}</span>  <span>Highest Rating :- {{posts.highest_rating}}</span> </div>
+                            <div class="card-text contentRow"><span>Rating :-{{posts.rating_number}}</span>  <span>Highest Rating :- {{posts.max_rank}}</span> </div>
                             <!-- <p class="card-text">Highest Rating :- {{posts.highest_rating}} </p> -->
                             <div class="card-text contentRow"><span>Global Rank :- {{posts.global_rank}} </span> <span>Country Rank :- {{posts.country_rank}}</span></div>
                             <!-- <p class="card-text">Country Rank :- {{posts.country_rank}}</p> -->
@@ -65,20 +65,19 @@ export default {
         }
     },
     methods:{
-        getPost(){
+       async getPost(){
             document.getElementById('profile').style.visibility="visible";
             this.alink='https://www.codechef.com/users/'+this.username;
-            axios.get('https://competitive-coding-api.herokuapp.com/api/codechef/'+this.username)
+       
+           await axios.get(`api/codechef/user/${this.username}`)
             .then((response)=>{
-                console.log(response.data);
-                console.log(this.username);
+                // console.log(this.username);
                 this.posts=response.data
-                this.userdetails=response.data.user_details;
-                this.totalsolved=response.data.fully_solved;
+                // console.log(this.posts)
                 
             })
-            .catch((error)=>{
-            console.log(error);
+            .catch(()=>{
+            // console.log(error);
             this.errmsg='Error in fetching data'
 
             })

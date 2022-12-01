@@ -143,7 +143,7 @@ export default {
 
 
     async addquestionfunc() {
-      console.log(this.inputdata);
+      // console.log(this.inputdata);
       const DataByUser = await JSON.stringify({
         email: localStorage.getItem("email1"),
         question_Description: this.Description,
@@ -166,8 +166,8 @@ export default {
           DataByUser,
           customConfig
         )
-        .then((response) => {
-          console.log(response.data);
+        .then(() => {
+          // console.log(response.data);
           alert("Question added successfully");
           document.getElementById("formid").reset();
           // location.reload();
@@ -178,7 +178,7 @@ export default {
         });
     },
    async deleteQues(a) {
-      console.log("question deleted"+ a);
+      // console.log("question deleted"+ a);
         //   let customConfig = {
         // headers: {
         //   "Content-Type": "application/json",
@@ -188,8 +188,8 @@ export default {
           `api/student/question/delete_questions/`+a,
           // customConfig
         )
-        .then((response) => {
-          console.log(response.data);
+        .then(() => {
+          // console.log(response.data);
           alert("Question deleted successfully");
           // location.reload();
           this.$router.push("qustion_solved");
@@ -209,7 +209,7 @@ export default {
       .then((response) => {
         // console.log(response.data);
         this.listfromserver = response.data;
-        console.log(this.listfromserver);
+        // console.log(this.listfromserver);
       })
       .catch((error) => {
         console.log(error);

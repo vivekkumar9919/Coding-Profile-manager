@@ -10,9 +10,7 @@
           <div id="topheading">
             <div id="heading1">Coding Profile Manager</div>
             <div id="headingContent">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Recusandae aliquam quod illo alias, commodi necessitatibus Lorem
-              ipsum dolor sit amet.
+             This project is develop to integrate the profile data of leetcode, codechef and codeforces at one place with other more features.
             </div>
           </div>
         </div>
@@ -284,7 +282,7 @@ export default {
   },
   mounted() {
     axios
-      .get("https://competeapi.vercel.app/contests/upcoming/")
+      .get("api/contest/upcoming")
       .then((response) => {
         // console.log(response.data);
         this.contestdetails = response.data;
@@ -297,7 +295,7 @@ export default {
     axios
       .get("api/feedback//show_feedback")
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         this.feedbackdetails = response.data;
       })
       .catch((err) => {
@@ -316,7 +314,7 @@ export default {
       return dt;
     },
     async feedbackfunc() {
-      console.log("feedback form submitted");
+      // console.log("feedback form submitted");
   let customConfig = {
         headers: {
           "Content-Type": "application/json",
@@ -409,8 +407,8 @@ export default {
 }
 
 .accordion {
-  --bs-accordion-btn-icon: url();
-  --bs-accordion-btn-active-icon: url();
+  --bs-accordion-btn-icon: url(#);
+  --bs-accordion-btn-active-icon: url(#);
 }
 
 .supportedplatformCont {

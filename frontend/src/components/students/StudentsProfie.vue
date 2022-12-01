@@ -316,10 +316,10 @@
                 <p class="card-text">
                   Username :-{{ this.datafromAPI.codechef }}
                 </p>
-                <p class="card-text">Stars :-{{ codechefuser.stars }}</p>
-                <p class="card-text">Rating :-{{ codechefuser.rating }}</p>
+                <p class="card-text">Stars :-{{ codechefuser.rating }}</p>
+                <p class="card-text">Rating :-{{ codechefuser.rating_number }}</p>
                 <p class="card-text">
-                  Highest Rating :- {{ codechefuser.highest_rating }}
+                  Highest Rating :- {{ codechefuser.max_rank }}
                 </p>
                 <p class="card-text">
                   Global Rank :- {{ codechefuser.global_rank }}
@@ -368,22 +368,20 @@
                 <p class="card-text">
                   Username:-{{ this.profiledata.leetcode }}
                 </p>
-                <p class="card-text">Ranking:-{{ leetcodeuser.ranking }}</p>
+
                 <p class="card-text">
                   Total Problems Solved:-
-                  {{ leetcodeuser.total_problems_submitted }}
+                  {{ toatal_solved }}
+                </p>
+           
+                <p class="card-text">
+                  Easy Problems:- {{ easy_solved }}
                 </p>
                 <p class="card-text">
-                  Acceptance Rate:- {{ leetcodeuser.acceptance_rate }}
+                  Medium Problems:- {{ medium_solved }}
                 </p>
                 <p class="card-text">
-                  Easy Problems:- {{ leetcodeuser.easy_problems_submitted }}
-                </p>
-                <p class="card-text">
-                  Medium Problems:- {{ leetcodeuser.medium_problems_submitted }}
-                </p>
-                <p class="card-text">
-                  Hard Problems:- {{ leetcodeuser.hard_questions_solved }}
+                  Hard Problems:- {{ hard_solved }}
                 </p>
                 <!-- <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p> -->
               </div>
@@ -393,9 +391,9 @@
 
 
         <div class="box3 ">
-             <div id="codechef" class="icon"  v-if="this.datafromAPI.codechefurl"><a v-bind:href="this.datafromAPI.codechefurl"><img src="../../assets/iconchef.png" alt="leetcode" class="platformicon"></a></div>
-             <div id="codeforces" class="icon"  v-if="this.datafromAPI.codechefuser"><a v-bind:href="this.datafromAPI.codeforcesurl"><img src="../../assets/iconforces.png" alt="leetcode" class="platformicon"></a></div>
-             <div id="leetcode" class="icon"  v-if="this.datafromAPI.leetcodeurl"><a v-bind:href="this.datafromAPI.leetcodeurl"><img src="../../assets/iconleet.png" alt="leetcode" class="platformicon"></a></div>
+             <div id="codechef" class="icon"  v-if="this.datafromAPI.codechefurl"><a v-bind:href="this.datafromAPI.codechefurl" target="_blank"><img src="../../assets/iconchef.png" alt="leetcode" class="platformicon"></a></div>
+             <div id="codeforces" class="icon"  v-if="this.datafromAPI.codechefuser"><a v-bind:href="this.datafromAPI.codeforcesurl" target="_blank"><img src="../../assets/iconforces.png" alt="leetcode" class="platformicon"></a></div>
+             <div id="leetcode" class="icon"  v-if="this.datafromAPI.leetcodeurl"><a v-bind:href="this.datafromAPI.leetcodeurl" target="_blank"><img src="../../assets/iconleet.png" alt="leetcode" class="platformicon"></a></div>
         </div>
 
 
@@ -422,6 +420,12 @@ export default {
       codeforcesuser: "",
       leetcodeuser: "",
       datafromAPI: {},
+
+                  contestRanking:[],
+             toatal_solved:'',
+             easy_solved:'',
+             medium_solved:'',
+             hard_solved:'',
     };
   },
   async created() {
@@ -433,9 +437,8 @@ export default {
           this.username
       )
       .then((response) => {
-        // console.log(response.data);
         this.datafromAPI = response.data[0];
-        console.log(this.datafromAPI);
+       
         this.profiledata.name = this.datafromAPI.name;
         this.profiledata.codechef = this.datafromAPI.codechef;
         this.profiledata.codeforces = this.datafromAPI.codeforces;
@@ -450,7 +453,6 @@ export default {
           (this.profiledata.profession = this.datafromAPI.profession);
           (this.profiledata.designation = this.datafromAPI.designation);
         
-        console.log(this.profiledata);
       })
       .catch((error) => {
         console.log(error);
@@ -459,14 +461,14 @@ export default {
 
     // sending the request for codechef data
     if (this.profiledata.codechef) {
-      console.log("Sending the codechef request");
+      // console.log("Sending the codechef request");
       await axios
         .get(
-          "https://competitive-coding-api.herokuapp.com/api/codechef/" +
+          "api/codechef/user/" +
             this.profiledata.codechef
         )
         .then((response) => {
-          console.log(response.data);
+          // console.log(response.data);
           this.codechefuser = response.data;
           // console.log(this.codechefuser)
         })
@@ -478,7 +480,7 @@ export default {
 
     // sending the request for codeforces data
     if (this.profiledata.codeforces) {
-      console.log("Sending the codeforces request");
+      // console.log("Sending the codeforces request");
       await axios
         .get(
           "https://competeapi.vercel.app/user/codeforces/" +
@@ -496,22 +498,31 @@ export default {
 
     // sending the request for leetcode data
     if (this.profiledata.leetcode) {
-      console.log("Sending the codechef request");
+      // console.log("Sending the codechef request");
       await axios
         .get(
-          "https://competitive-coding-api.herokuapp.com/api/leetcode/" +
+          "api/leetcode/user/" +
             this.profiledata.leetcode
         )
         .then((response) => {
-          console.log(response.data);
-          this.leetcodeuser = response.data;
+          this.leetcodeuser = response.data['data'];
+          this.contestRanking=this.leetcodeuser['userContestRanking']
+           this.toatal_solved=this.leetcodeuser['matchedUser']['submitStats']['acSubmissionNum'][0].count
+          this.easy_solved=this.leetcodeuser['matchedUser']['submitStats']['acSubmissionNum'][1].count
+          this.medium_solved=this.leetcodeuser['matchedUser']['submitStats']['acSubmissionNum'][2].count
+          this.hard_solved=this.leetcodeuser['matchedUser']['submitStats']['acSubmissionNum'][3].count
         })
-        .catch((error) => {
-          console.log(error);
+        .catch(() => {
+          // console.log(error);
           this.errmsg2 = "Error in fetching data";
         });
     }
   },
+
+  // before update 
+ 
+
+  
   methods: {
     updateformfunc() {
       document.getElementById("formContID").style.visibility = "visible";
@@ -520,7 +531,7 @@ export default {
       document.getElementById("profileContID").style.display = "none";
     },
     async saveprofile() {
-      console.log(this.profiledata);
+      // console.log(this.profiledata);
       let customConfig = {
         headers: {
           "Content-Type": "application/json",
@@ -557,8 +568,8 @@ export default {
       document.getElementById("profileContID").style.visibility = "visible";
       document.getElementById("profileContID").style.display = "flex";
       // location.reload();
-      // this.$router.push("profile");
-      this.$router.go()
+      this.$router.push("/student/profile");
+      // this.$router.go()
     },
 
     cancelfunc() {
