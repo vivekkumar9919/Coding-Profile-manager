@@ -23,18 +23,20 @@ stars ,rating, rank etc
 ### Profile info
 #### Base URL
 ```http
-https://competitive-coding-api.herokuapp.com/api/
+https://competeapi.vercel.app/user/
 ```
 
 
 #### Request Format
 ```http
-https://competitive-coding-api.herokuapp.com/api/{platform_name}/{user_name}
+https://competeapi.vercel.app/user/<platform>/<username>/
 ```
 
 
 #### Example URL
-https://competitive-coding-api.herokuapp.com/api/codechef/vivek9919
+https://competeapi.vercel.app/user/codechef/vivek9919/
+https://competeapi.vercel.app/user/codeforces/vivek9919/
+https://competeapi.vercel.app/user/leetcode/vivek9919/
 
 #### Platforms Available
 * Leetcode
